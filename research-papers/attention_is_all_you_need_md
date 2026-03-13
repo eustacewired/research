@@ -26,7 +26,7 @@ The encoder in this archotecture has a stack of N = 6 identical layers each with
 The decoder is also composed of a stack of N = 6 identical layers and in addition to the 2 layers the decoder adds a 3rd layer that performs a multihead attention over the output of the encoder stack(they also employ residual connections around each of the sub layers, followed by layer normalization) 
 The self attention sub layer is ,odified in that the predictions for position i can depend only on the know outputs at positions less than i. I find this also to be very intuitive which begs the question did the do things differently before the transformer, What did they do and how and how did that affect the quality generally and  also in terms of parallelization and train time  which the authors have highlighted before
 
-![Transformer Architecture](images/fig1.png)
+![Transformer Architecture](../images/fig1.png)
 
 The attention function in the paper is described as mapping a query and a set of key-value pairs to an output where the query, keys, values and output are all vectors(Remind myself about vectors from a math perspective and later programming perspective)The output is computed as a weighted sum of the values and wight is assigned to each value by a compatibility function of the query with the corresponding key(Try to see whether there is a correlation between this concept and the neuron equation concept taught in class since I hear it shouting over here) 
 Later find the compatibility dunction is a softmax function
