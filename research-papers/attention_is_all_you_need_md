@@ -1,0 +1,50 @@
+Attention is all you need
+What I read and feel I need to jot down
+
+From the Abstract this is what I gathered:
+Sequence transduction models are based on complex recurrent or CNNs that include an encoder and decoder. I understand sequence models; it sounds intuidive what is  transduction
+Best performing models connect to an attention mechanism before encoder decoder. Attention mechanism sounds intuitive; studied about encoders and decoders and also sound intuitive but what are they in this context
+The transformer is based only on attention mechanisms dispensing recurrence and convolutions completely. Convolutions, as in in CNNs, Recurrence? Recur? 
+They experimented on 2 machine translation tasks to show superiority, they show it is more parallelizable what exactly is that and what exactly do we mean machine translation because continuing in the abstract the experiments they mention human language translations so why call it machine translation
+
+What I gathered from the intro:
+Understand the numbering eg:Recurrent neural networks, long short-term memory [12] and gated recurrent [7] neural networks
+in particular, have been firmly established as state of the art approaches in sequence modeling and
+transduction problems such as language modeling and machine translation [29, 2, 5]. Numerous
+efforts have since continued to push the boundaries of recurrent language models and encoder-decoder
+architectures [31, 21, 13]
+Do not really understand the numbering so find put more about that
+recurrent models align the positions of hidden states ht as a function of the previous hidden state ht-1 and the input of position 
+The self attention concept is an attention mechanism relating different positions of a single sequence in order to compute a representation of the sequence
+According to the authors their transformer is the first transduction model relying entirely on self attention to compute representations of its input and output without using  sequence aligned RNNs or convolutions
+
+From the model architecture
+Normal Encoder decoder works by the encoder mapping an input sequence of symbol representations(x1,...xn) to a continuous sequence representation Z =(Z1,....,Zn). The decoder then takes Z and generates an output sequence(y1,...,ym) (of symbols one element at a time?)
+also at each step the model is auto regressive meaning it takes the previously genned symbols as additional input when generating the next
+The encoder in this archotecture has a stack of N = 6 identical layers each with 2 sub layers and the first is a multi head self atteention mechanism and seconf is a feed forward network(what is a feed forward network what is a self attention mech that is multi headed and why is it multi headed, because of relating to different positions?
+)(I do no understand the passage on residual connection ->normalization layer i.e the output of each sub layer is...)
+The decoder is also composed of a stack of N = 6 identical layers and in addition to the 2 layers the decoder adds a 3rd layer that performs a multihead attention over the output of the encoder stack(they also employ residual connections around each of the sub layers, followed by layer normalization) 
+The self attention sub layer is ,odified in that the predictions for position i can depend only on the know outputs at positions less than i. I find this also to be very intuitive which begs the question did the do things differently before the transformer, What did they do and how and how did that affect the quality generally and  also in terms of parallelization and train time  which the authors have highlighted before
+
+The attention function in the paper is described as mapping a query and a set of key-value pairs to an output where the query, keys, values and output are all vectors(Remind myself about vectors from a math perspective and later programming perspective)The output is computed as a weighted sum of the values and wight is assigned to each value by a compatibility function of the query with the corresponding key(Try to see whether there is a correlation between this concept and the neuron equation concept taught in class since I hear it shouting over here) 
+Later find the compatibility dunction is a softmax function
+
+Skipping the attention math for the first iteration
+Ways attention applied in this model: encoder-decoder attention layers, self attention layers, self attention layers in decoder that allows it to attend to all positions in the decoder up to and including that position(Try to diagramaticallu see the positional concept ideas in this paper for deeper understanding
+
+Each of the layers inthe enc-dec has a fully connected feed forward network applied to each position separately and identically and this consists of 2 linear transfoirmations with a ReLU activation in between and as mucha as they are the same in different positions they use different parameters layer to layer
+
+Embeddings and softmax: Embeddings to convert inout tokenas and output tokens ro vectors of a dimension. (The Token buzzword needs to be understood later)
+Used a linear transfirmation and softmax function to convert the decoder output to preedicted next token probabilities(Shiver me timbers, is  linear algebra involved?)
+
+This model contains no recurrence and no convolution and thus in order for the model to make use of the
+order of the sequence,they injected some info about the relative/absolute position of the tokens in the sequence to this end they add "positional encodings" to the input embeddings at the bottom of enc-dec stacks and they have the same dimension stated above(Earlier reccurrence and convolution models must have positional order in their architeecture, how does the implementation there differ from here apart from the obvious injection)
+
+Why did the Authors decide on Self attention layers and just out of curiosity how and why is it not possible to implement it any other way
+
+What is an adam optimizer(Curious as it mentions learning rate a hyperparameter mentioned in the coursework in class which my dumbah could not remember another hyperparameter in class lol) and throughout the paper what hyperparameters did they use during training(they used 8 NVIDIA p100 GPUs btw)
+
+First time hearinf about regularization training and label smoothing
+
+In conclusion this paper introduces the transformer, a model that is based entirely on attention replacing the common recurrent layers in enc-dec architectures with multi headed seelf attention 
+Transformers can be trained significantly faster than architectures based on recurrent or convolutional layerrs 
